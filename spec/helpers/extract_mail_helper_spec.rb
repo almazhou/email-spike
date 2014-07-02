@@ -19,7 +19,7 @@ RSpec.describe ExtractMailHelper, :type => :helper do
   	end
 
   	it "extract day" do 
-  		result = ExtractMailHelper.extract_leave_days("zhou xuan will take 1 day of annual leave on [7.2]")
+  		result = ExtractMailHelper.extract_leave_days("1 day of annual leave on [7.2]")
   		expect(result).to eq("1 day")
   	end
 

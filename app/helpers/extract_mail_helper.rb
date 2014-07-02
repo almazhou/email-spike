@@ -37,10 +37,8 @@ module ExtractMailHelper
 		email_subject_string.split("will take")
 	end
 
-	def self.split_day(email_subject_string)
-		substrings = split_name(email_subject_string)
-
-		amount_string = substrings[1].split("of")
+	def self.split_day(input_str)
+		amount_string = input_str.split("of")
 		return amount_string
 	end
 end
