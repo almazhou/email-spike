@@ -47,7 +47,7 @@ module ExtractMailHelper
 		leaves_str = split_name(email_subject_string)
 		leave_records = leaves_str[1].split("&&")
 
-		what = leave_records.map{
+		raw_request_list = leave_records.map{
 			|record|
 			leave_request = Hash.new
 			leave_request[:name] = name;
@@ -61,10 +61,32 @@ module ExtractMailHelper
 			leave_request
 
 		}
-			puts "@@@@@@@@@@@@@"
-			puts what
-			puts "@@@@@@@@@@@@@"
 		
-		return what
+		return raw_request_list
+	end
+
+	def self.extract_single_request(raw_list)
+		processed_request_list = Array.new
+		raw_list.each{
+			|leave_record|
+			dates = leave_record[:leave_dates]
+			dates.each{
+				|leave_date|
+				leave_request = Hash.new
+				leave_request[:name] = leave_record[:name]
+				leave_request[:leave_type] = leave_record[:leave_type]
+				if(leave_record[:amount] >= 1)
+					durationInHour = 8.0
+				else
+					durationInHour = leave_record[:amount]*8
+				end
+				leave_request[:durationInHour] = durationInHour
+
+				leave_request[:from] = leave_date
+				leave_request[:to] = leave_date
+				processed_request_list.push(leave_request)
+			}
+		}
+		return processed_request_list
 	end
 end
