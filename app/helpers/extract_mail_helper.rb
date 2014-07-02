@@ -2,22 +2,14 @@ require 'date'
 module ExtractMailHelper
 	def self.extract_name(email_subject_string)
 		email_subject_string =~ /^(.*) will take/
-		# substrings = split_name(email_subject_string)
-
-		# return substrings[0].strip
 		$1
 	end
 
 	def self.extract_leave_days(email_subject_string)
-		# amount_string = split_day(email_subject_string)
-		# return amount_string[0].strip
 		email_subject_string =~ /^(.*) of/
 		$1
 	end
 	def self.extract_leave_amount(days_string)
-		# day_str = days_string.split(" ")
-
-		# return day_str[0].to_f
 		days_string =~ /^(.*) /
 		$1.to_f
 	end
@@ -53,14 +45,6 @@ module ExtractMailHelper
 		name = extract_name(email_subject_string);
 		leaves_str = split_name(email_subject_string)
 		leave_records = leaves_str[1].split("&&")
-
-		# raw_request_list = leave_records.map do |record|
-		# 	{name: name, amount: extract_leave_amount(extract_leave_days(record)),
-		# 		leave_type: extract_leave_type(record), leave_dates: extract_date_of_leave(record)
-		# 	}
-		# end
-		
-		# return raw_request_list
 
 		leave_records.map do |record|
 			extract_date_of_leave(record).map do |date|

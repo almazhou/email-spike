@@ -1,42 +1,23 @@
-require 'mail'
+
 class SpikeMailsController < ApplicationController
   before_action :set_spike_mail, only: [:show, :edit, :update, :destroy]
 
   # GET /spike_mails
   # GET /spike_mails.json
   def index
-    # mail = Mail.new do
-    #   from    'zx_new@126.com'
-    #   to      'almazhou0303@gmail.com'
-    #   subject 'This is a test email'
-    #   body    "some simple body"
-    # end
-    # mail.to_s =~ /Message\-ID: <[\d\w_]+@.+.mail/
-    # mail.deliver!
+    email_content = MailHelper.read_mail
+    print "#"*50
+    print email_content[:subject]
+    print "%"*50
+    request_list = ExtractMailHelper.extract_leave_list(email_content[:subject])
 
-    Mail.defaults do
-      retriever_method :pop3, :address    => "pop.gmail.com",
-      :port       => 995,
-      :user_name  => 'almazhou0303@gmail.com',
-      :password   => '88534650',
-      :enable_ssl => true
-    end
-    emails = Mail.find(:what => :first, :count => 1, :order => :asc)
-    # emails = Mail.last
-    print "yes,yes,yes!!!!!!!!!!!!!!!!!!!!!!!!!"
-    # print emails.length
-    print emails.from_addrs
-    print "yes,yes,yes!!!!!!!!!!!!!!!!!!"
-    print emails.to_addrs
-     print "yes,yes,yes!!!!!!!!!!!!!!!!!!"
-     print emails.subject
-    print "yes,yes,yes!!!!!!!!!!!!!!!!!!"
-    # print emails.convert_to_multipart
-    print "yes,yes,yes!!!!!!!!!!!!!!!!!!"
-    print emails.text_part.body.decoded
-    print "yes,yes,yes!!!!!!!!!!!!!!!!!!"
-    if(emails.to_addrs.eql?("almazhou0303@gmail.com"))
-      puts emails.subject.split('will').join(".")
+    # employee_post_params = {:employee => {:employee_id => 3, :name => 'name', :email => 'email@thoughtworks.com', :phone => '13012345678'}, :format => :json}
+    # PostHelper.post_to_endpoint("http://localhost:3000/employees/upload",employee_post_params)
+
+   
+    request_list.each do |request|
+    request_post_params = {:employee_id => 1, :leave_request => request,:format => :json}
+    PostHelper.post_to_endpoint("http://localhost:3000/employees/1/leave_requests",request_post_params)
     end
 
     @spike_mails = SpikeMail.all
