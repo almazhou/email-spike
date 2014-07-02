@@ -5,9 +5,14 @@ module ExtractMailHelper
 		return substrings[0].strip
 	end
 
-	def self.extract_leave_amount(email_subject_string)
+	def self.extract_leave_days(email_subject_string)
 		amount_string = split_day(email_subject_string)
 		return amount_string[0].strip
+	end
+	def self.extract_leave_amount(days_string)
+		day_str = days_string.split(" ")
+
+		return day_str[0].to_f
 	end
 
 	def self.split_name(email_subject_string)
