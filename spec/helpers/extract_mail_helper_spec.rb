@@ -73,7 +73,7 @@ RSpec.describe ExtractMailHelper, :type => :helper do
   	end
 
   	it "should convert request to single record" do
-  		result = ExtractMailHelper.extract_leave_list("test name will take 2 days of annual leave on 7.2,7.6")
+  		result = ExtractMailHelper.extract_leave_list("test name will take 2 days of annual leave on 7.2,7.6 && 0.5 day of sick leave on 7.5")
   		requests = ExtractMailHelper.extract_single_request(result)
 
   		expect(requests.at(0)[:name]).to eq("test name")
@@ -84,6 +84,10 @@ RSpec.describe ExtractMailHelper, :type => :helper do
 
   		expect(requests.at(1)[:from]).to eq(Date.parse("2014.7.6"))
   		expect(requests.at(1)[:to]).to eq(Date.parse("2014.7.6"))
+
+  		expect(requests.at(2)[:leave_type]).to eq("sick leave")
+  		expect(requests.at(2)[:durationInHour]).to eq(4.0)
+  		expect(requests.at(2)[:from]).to eq(Date.parse("2014-7-5"))
   	end
 
 
