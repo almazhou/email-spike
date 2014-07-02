@@ -28,6 +28,11 @@ RSpec.describe ExtractMailHelper, :type => :helper do
   		expect(result).to be(1.0)
   	end
 
+  	it "extract exact amount of days" do
+  		result = ExtractMailHelper.extract_leave_amount("0.5 day")
+  		expect(result).to be(0.5)
+  	end
+
   	it "extract leave type" do
   		result = ExtractMailHelper.extract_leave_type("zhou xuan will take 1 day of annual leave on [7.2]")
   		expect(result).to eq("annual leave")	
@@ -40,5 +45,16 @@ RSpec.describe ExtractMailHelper, :type => :helper do
   		expect(result.at(0)).to eq(Date.parse("2014.7.2"))
 
   	end
+
+
+  	it "extract date of leave" do
+  		result = ExtractMailHelper.extract_date_of_leave("zhou xuan will take 1 day of annual leave on 7.2,7.3,7.5")
+
+  		expect(result.length).to be(3)
+  		expect(result.at(1)).to eq(Date.parse("2014.7.3"))
+		expect(result.at(2)).to eq(Date.parse("2014.7.5"))
+  	end
+
+
   end
 end
