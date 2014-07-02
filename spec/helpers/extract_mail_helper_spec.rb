@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'date'
 
 # Specs in this file have access to a helper object that includes
 # the ExtractMailHelper. For example:
@@ -30,6 +31,14 @@ RSpec.describe ExtractMailHelper, :type => :helper do
   	it "extract leave type" do
   		result = ExtractMailHelper.extract_leave_type("zhou xuan will take 1 day of annual leave on [7.2]")
   		expect(result).to eq("annual leave")	
+  	end
+
+  	it "extract date of leave" do
+  		result = ExtractMailHelper.extract_date_of_leave("zhou xuan will take 1 day of annual leave on 7.2")
+
+  		expect(result.length).to be(1)
+  		expect(result.at(0)).to eq(Date.parse("2014.7.2"))
+
   	end
   end
 end
