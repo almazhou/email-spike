@@ -21,8 +21,7 @@ module ExtractMailHelper
 		return split_leave_type(result_str[1])[0].strip
 	end
 	def self.extract_date_of_leave(email_subject_string)
-		result_str = split_day(email_subject_string)
-		split_dates = split_leave_type(result_str[1])[1].strip
+		split_dates = email_subject_string.split("on")[1]
 		dates = split_dates.split(",")
 		current_year_dates = dates.map!{|str| 
 
