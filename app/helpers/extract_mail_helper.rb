@@ -1,19 +1,25 @@
 require 'date'
 module ExtractMailHelper
 	def self.extract_name(email_subject_string)
-		substrings = split_name(email_subject_string)
+		email_subject_string =~ /^(.*) will take/
+		# substrings = split_name(email_subject_string)
 
-		return substrings[0].strip
+		# return substrings[0].strip
+		$1
 	end
 
 	def self.extract_leave_days(email_subject_string)
-		amount_string = split_day(email_subject_string)
-		return amount_string[0].strip
+		# amount_string = split_day(email_subject_string)
+		# return amount_string[0].strip
+		email_subject_string =~ /^(.*) of/
+		$1
 	end
 	def self.extract_leave_amount(days_string)
-		day_str = days_string.split(" ")
+		# day_str = days_string.split(" ")
 
-		return day_str[0].to_f
+		# return day_str[0].to_f
+		days_string =~ /^(.*) /
+		$1.to_f
 	end
 
 	def self.extract_leave_type(email_subject_string)
@@ -43,50 +49,37 @@ module ExtractMailHelper
 	end
 
 	def self.extract_leave_list(email_subject_string)
+		"test name will take 2 days of annual leave on 7.2,7.6 && 0.5 day of sick leave on 7.5"
 		name = extract_name(email_subject_string);
 		leaves_str = split_name(email_subject_string)
 		leave_records = leaves_str[1].split("&&")
 
-		raw_request_list = leave_records.map{
-			|record|
-			leave_request = Hash.new
-			leave_request[:name] = name;
-
-			days_str = extract_leave_days(record)
-			leave_request[:amount] = extract_leave_amount(days_str)
-
-			leave_request[:leave_type] = extract_leave_type(record)
-
-			leave_request[:leave_dates] = extract_date_of_leave(record)
-			leave_request
-
-		}
+		# raw_request_list = leave_records.map do |record|
+		# 	{name: name, amount: extract_leave_amount(extract_leave_days(record)),
+		# 		leave_type: extract_leave_type(record), leave_dates: extract_date_of_leave(record)
+		# 	}
+		# end
 		
-		return raw_request_list
+		# return raw_request_list
+
+		leave_records.map do |record|
+			extract_date_of_leave(record).map do |date|
+				durationInHour = [extract_leave_amount(extract_leave_days(record)), 1].min * 8.0
+				{name: name, durationInHour: durationInHour,
+				leave_type: extract_leave_type(record), from: date, to: date
+				}
+			end
+		end.flatten
 	end
 
-	def self.extract_single_request(raw_list)
-		processed_request_list = Array.new
-		raw_list.each{
-			|leave_record|
-			dates = leave_record[:leave_dates]
-			dates.each{
-				|leave_date|
-				leave_request = Hash.new
-				leave_request[:name] = leave_record[:name]
-				leave_request[:leave_type] = leave_record[:leave_type]
-				if(leave_record[:amount] >= 1)
-					durationInHour = 8.0
-				else
-					durationInHour = leave_record[:amount]*8
-				end
-				leave_request[:durationInHour] = durationInHour
-
-				leave_request[:from] = leave_date
-				leave_request[:to] = leave_date
-				processed_request_list.push(leave_request)
-			}
-		}
-		return processed_request_list
+	def self.extract_single_request(raw_requests)
+		raw_requests.map do |raw_request|
+			raw_request[:leave_dates].map do |leave_date|
+				{name: raw_request[:name], leave_type: raw_request[:leave_type],
+					durationInHour: [raw_request[:amount], 1].min * 8.0,
+					from: leave_date, to: leave_date
+				}	
+			end
+		end.flatten
 	end
 end

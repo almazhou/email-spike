@@ -55,26 +55,27 @@ RSpec.describe ExtractMailHelper, :type => :helper do
 		expect(result.at(2)).to eq(Date.parse("2014.7.5"))
   	end
 
-  	it "should get a list of leaves" do
-  		result = ExtractMailHelper.extract_leave_list("test name will take 2 days of annual leave on 7.2,7.6 && 1 day of sick leave on 7.5")
+  	# it "should get a list of leaves" do
+  	# 	result = ExtractMailHelper.extract_leave_list("test name will take 2 days of annual leave on 7.2,7.6 && 1 day of sick leave on 7.5")
 
-  		expect(result.length).to be(2)
-  		expect(result.at(0)[:name]).to eq("test name")
-  		expect(result.at(0)[:leave_type]).to eq("annual leave")
-  		expect(result.at(0)[:amount]).to eq(2.0)
-  		expect(result.at(0)[:leave_dates].at(0)).to eq(Date.parse("2014.7.2"))
-  		expect(result.at(0)[:leave_dates].at(1)).to eq(Date.parse("2014-7-6"))
+  	# 	expect(result.length).to be(2)
+  	# 	expect(result.at(0)[:name]).to eq("test name")
+  	# 	expect(result.at(0)[:leave_type]).to eq("annual leave")
+  	# 	expect(result.at(0)[:amount]).to eq(2.0)
+  	# 	expect(result.at(0)[:leave_dates].at(0)).to eq(Date.parse("2014.7.2"))
+  	# 	expect(result.at(0)[:leave_dates].at(1)).to eq(Date.parse("2014-7-6"))
 
-  		expect(result.at(1)[:name]).to eq("test name")
-  		expect(result.at(1)[:leave_type]).to eq("sick leave")
-  		expect(result.at(1)[:amount]).to eq(1.0)
-  		expect(result.at(1)[:leave_dates].at(0)).to eq(Date.parse("2014.7.5"))
+  	# 	expect(result.at(1)[:name]).to eq("test name")
+  	# 	expect(result.at(1)[:leave_type]).to eq("sick leave")
+  	# 	expect(result.at(1)[:amount]).to eq(1.0)
+  	# 	expect(result.at(1)[:leave_dates].at(0)).to eq(Date.parse("2014.7.5"))
 
-  	end
+  	# end
 
   	it "should convert request to single record" do
-  		result = ExtractMailHelper.extract_leave_list("test name will take 2 days of annual leave on 7.2,7.6 && 0.5 day of sick leave on 7.5")
-  		requests = ExtractMailHelper.extract_single_request(result)
+  		# result = ExtractMailHelper.extract_leave_list("test name will take 2 days of annual leave on 7.2,7.6 && 0.5 day of sick leave on 7.5")
+  		# requests = ExtractMailHelper.extract_single_request(result)
+ requests = ExtractMailHelper.extract_leave_list("test name will take 2 days of annual leave on 7.2,7.6 && 0.5 day of sick leave on 7.5")
 
   		expect(requests.at(0)[:name]).to eq("test name")
   		expect(requests.at(0)[:leave_type]).to eq("annual leave")
