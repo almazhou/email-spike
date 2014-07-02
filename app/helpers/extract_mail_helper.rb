@@ -41,4 +41,30 @@ module ExtractMailHelper
 		amount_string = input_str.split("of")
 		return amount_string
 	end
+
+	def self.extract_leave_list(email_subject_string)
+		name = extract_name(email_subject_string);
+		leaves_str = split_name(email_subject_string)
+		leave_records = leaves_str[1].split("&&")
+
+		what = leave_records.map{
+			|record|
+			leave_request = Hash.new
+			leave_request[:name] = name;
+
+			days_str = extract_leave_days(record)
+			leave_request[:amount] = extract_leave_amount(days_str)
+
+			leave_request[:leave_type] = extract_leave_type(record)
+
+			leave_request[:leave_dates] = extract_date_of_leave(record)
+			leave_request
+
+		}
+			puts "@@@@@@@@@@@@@"
+			puts what
+			puts "@@@@@@@@@@@@@"
+		
+		return what
+	end
 end
