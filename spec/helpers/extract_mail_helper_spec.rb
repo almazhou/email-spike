@@ -13,8 +13,13 @@ require 'rails_helper'
 RSpec.describe ExtractMailHelper, :type => :helper do
   describe "extrace message from email" do
   	it "extract name" do 
-  		name = ExtractMailHelper.extract_name("zhou xuan will take one day annual leave on [7.2]")
+  		name = ExtractMailHelper.extract_name("zhou xuan will take 1 day of annual leave on [7.2]")
   		expect(name).to eq("zhou xuan")
+  	end
+
+  	it "extract day" do 
+  		result = ExtractMailHelper.extract_leave_amount("zhou xuan will take 1 day of annual leave on [7.2]")
+  		expect(result).to eq("1 day")
   	end
   end
 end
