@@ -49,7 +49,7 @@ module ExtractMailHelper
 		leave_records.map do |record|
 			extract_date_of_leave(record).map do |date|
 				durationInHour = [extract_leave_amount(extract_leave_days(record)), 1].min * 8.0
-				{name: name, durationInHour: durationInHour,
+				{name: name, durationInHours: durationInHour,
 				leave_type: extract_leave_type(record), from: date, to: date
 				}
 			end
@@ -60,7 +60,7 @@ module ExtractMailHelper
 		raw_requests.map do |raw_request|
 			raw_request[:leave_dates].map do |leave_date|
 				{name: raw_request[:name], leave_type: raw_request[:leave_type],
-					durationInHour: [raw_request[:amount], 1].min * 8.0,
+					durationInHours: [raw_request[:amount], 1].min * 8.0,
 					from: leave_date, to: leave_date
 				}	
 			end

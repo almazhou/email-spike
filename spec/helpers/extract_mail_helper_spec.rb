@@ -48,7 +48,7 @@ RSpec.describe ExtractMailHelper, :type => :helper do
 
       expect(requests.at(0)[:name]).to eq("test name")
       expect(requests.at(0)[:leave_type]).to eq("sick leave")
-      expect(requests.at(0)[:durationInHour]).to eq(4.0)
+      expect(requests.at(0)[:durationInHours]).to eq(4.0)
       expect(requests.at(0)[:from]).to eq(Date.parse("2014.7.5"))
       expect(requests.at(0)[:to]).to eq(Date.parse("2014.7.5"))
     end
@@ -58,7 +58,7 @@ RSpec.describe ExtractMailHelper, :type => :helper do
 
   		expect(requests.at(0)[:name]).to eq("test name")
   		expect(requests.at(0)[:leave_type]).to eq("annual leave")
-  		expect(requests.at(0)[:durationInHour]).to eq(8.0)
+  		expect(requests.at(0)[:durationInHours]).to eq(8.0)
   		expect(requests.at(0)[:from]).to eq(Date.parse("2014.7.2"))
   		expect(requests.at(0)[:to]).to eq(Date.parse("2014.7.2"))
 
@@ -66,7 +66,7 @@ RSpec.describe ExtractMailHelper, :type => :helper do
   		expect(requests.at(1)[:to]).to eq(Date.parse("2014.7.6"))
 
   		expect(requests.at(2)[:leave_type]).to eq("sick leave")
-  		expect(requests.at(2)[:durationInHour]).to eq(4.0)
+  		expect(requests.at(2)[:durationInHours]).to eq(4.0)
   		expect(requests.at(2)[:from]).to eq(Date.parse("2014-7-5"))
   	end
 
