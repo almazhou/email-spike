@@ -1,1 +1,1 @@
-5 * * * * ~/schedule_mail.sh
+50 * * * * ~/schedule_mail.sh
