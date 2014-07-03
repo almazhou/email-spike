@@ -1,0 +1,1 @@
+rails runner "PostHelper.post_email_to_ask_leave_api"
